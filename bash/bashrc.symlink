@@ -1,0 +1,26 @@
+# If not running interactively, don't do anything
+case $- in
+  *i*) ;;
+    *) return;;
+esac
+
+# Don't check mail when opening terminal.
+unset MAILCHECK
+export TODO="t"
+export SCM_CHECK=true
+export EDITOR=nvim
+export VISUAL=nvim
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+export TMUX_SESSION="$(whoami | sed 's/\./-/g')"
+export TODOTXT_CFG_FILE="$HOME/.config/todo/config"
+
+# starship prompt
+export STARSHIP_CONFIG=~/.config/starship.toml
+if type starship &> /dev/null; then
+    eval "$(starship init bash)"
+fi
+
+source ~/.scripts/default
+source ~/.scripts/aliases
+source ~/.scripts/functions

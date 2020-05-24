@@ -1,0 +1,9 @@
+alias gd="git diff --ignore-all-space --ignore-space-at-eol --ignore-space-change --ignore-blank-lines -- .  ':(exclude)*package-lock.json'"
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+alias top="vtop --theme=wizard"
+alias reload='source ~/.bashrc'
+alias tmux="TERM=xterm-256color tmux"
+alias tm='tmux attach-session -t "$TMUX_SESSION" || tmux new-session -s "$TMUX_SESSION"'
+alias t='todo.sh'

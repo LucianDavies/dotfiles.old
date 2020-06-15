@@ -1,6 +1,7 @@
 #!/bin/bash
 
 packages=(
+"gpg"
 "starship"
 "tmux"
 "neovim"
@@ -9,6 +10,14 @@ packages=(
 "z"
 "jq"
 "todo-txt"
+"gawk"
+"coreutils"
+"curl"
+"postgres"
+"git"
+"reattach-to-user-namespace"
+"diff-so-fancy"
+"asdf"
 )
 
 casks=(
@@ -28,22 +37,23 @@ function dotfiles_brew_init {
           echo "You do not have command line tools installed, install them pls"
           exit 1
         fi
-    
+
 	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
       fi
   fi
 
   for i in "${packages[@]}"
   do
-    brew install $i
+    brew list $i >/dev/null || brew install $i
   done
 
   brew tap 'homebrew/cask-fonts'
   for i in "${casks[@]}"
   do
-    brew cask install $i
+    brew cask list $i b >/dev/null || brew cask install $i
   done
 
+  $(brew --prefix)/opt/fzf/install
   brew cleanup
   brew doctor
 }

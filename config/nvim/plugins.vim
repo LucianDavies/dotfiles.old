@@ -25,7 +25,8 @@ call plug#begin('~/.config/nvim/plugged')
 Plug 'ntpeters/vim-better-whitespace'
 
 " auto-close plugin
-Plug 'rstacruz/vim-closer'
+Plug 'jiangmiao/auto-pairs'
+Plug 'reedes/vim-pencil'
 
 " Intellisense Engine
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -35,38 +36,25 @@ Plug 'Shougo/denite.nvim'
 
 " Snippet support
 Plug 'Shougo/neosnippet'
-Plug 'Shougo/neosnippet-snippets'
+Plug 'honza/vim-snippets'
 
+" vim-test
+Plug 'janko/vim-test'
 " === Git Plugins === "
 " Enable git changes to be shown in sign column
 Plug 'mhinz/vim-signify'
 Plug 'tpope/vim-fugitive'
 
-" === Javascript Plugins === "
-" Typescript syntax highlighting
-Plug 'HerringtonDarkholme/yats.vim'
-
-" ReactJS JSX syntax highlighting
-Plug 'mxw/vim-jsx'
-
-" === Syntax Highlighting === "
-" Improved syntax highlighting and indentation
-Plug 'othree/yajs.vim'
+" === Language Plugins === "
+Plug 'sheerun/vim-polyglot'
 
 " === UI === "
-" File explorer
-Plug 'scrooloose/nerdtree'
-
 " Colorscheme
 Plug 'mhartington/oceanic-next'
-
+Plug 'morhetz/gruvbox'
 " Customized vim status line
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-
-" Icons
-Plug 'ryanoasis/vim-devicons'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 
 " Initialize plugin system
 call plug#end()

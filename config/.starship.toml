@@ -1,3 +1,0 @@
-# Disable "took Xs"
-[cmd_duration]
-disabled = true

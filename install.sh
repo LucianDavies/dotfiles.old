@@ -8,7 +8,8 @@ INSTALLDIR=$PWD
 CORE_LIBS=(
   os
   #brew
-  #node
+  #asdf
+  #rust
   config
 )
 

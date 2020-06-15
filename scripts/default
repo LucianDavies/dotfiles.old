@@ -1,19 +1,43 @@
 ############## Defaults ################
+# Don't check mail when opening terminal.
+unset MAILCHECK
+export EDITOR=nvim
+export VISUAL=nvim
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+export HOMEBREW_NO_ANALYTICS=1
 
+export PATH="$HOME/.cargo/bin:$PATH"
+
+export FZF_DEFAULT_COMMAND="rg --files --vimgrep --no-messages --no-ignore --hidden --follow --ignore-file $HOME/.rgignore"
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export EDITOR='nvim' ALTERNATE_EDITOR='vim'
+
+export TMUX_SESSION="$(whoami | sed 's/\./-/g')"
+alias tmux="TERM=xterm-256color tmux"
+if [ `which tmux 2> /dev/null` -a -z "$TMUX" ]; then
+  tmux attach-session -t "$TMUX_SESSION" || tmux new-session -s "$TMUX_SESSION"
+fi
+
 ############## HISTORY OPTIONS ################
 # Bash History
-export HISTCONTROL=$HISTCONTROL${HISTCONTROL+,}ignoredups
-export HISTCONTROL=ignoreboth
-export HISTIGNORE='&:clear:ls:cd:[bf]g:exit:[ t\]*'
-# append to the history file, don't overwrite it
+export HISTCONTROL="${HISTCONTROL}${HISTCONTROL+,}ignoredups"
+HISTIGNORE_BASE=$'[ \t]*:&:[fb]g:exit:ls:ls -?::ls -??:ll:history:cd:cd -:cd ~:cd ..:..:pwd:date:* --help:* help'
+HISTIGNORE_GIT='git +([a-z]):git pob -f:git pr -o:git undo .:git diff --staged'
+HISTIGNORE_LOCAL='o:oo'
+HISTIGNORE_DEV='p:npm install:yarn install'
+
+# export combined HISTIGNORE
+export HISTIGNORE=${HISTIGNORE}:${HISTIGNORE_BASE}:${HISTIGNORE_GIT}:${HISTIGNORE_LOCAL}:${HISTIGNORE_DEV}
+
+
+# bash history
+export HISTSIZE=100000
+export HISTFILESIZE=100000
+export HISTIGNORE=?:??
 shopt -s histappend
 
-# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=10000
-HISTFILESIZE=20000
-
-
+export PROMPT_COMMAND="history -a; history -n; $PROMPT_COMMAND"
 ############## GENERAL UI ################
 # Vim key-bindings
 set -o vi
@@ -21,11 +45,3 @@ set -o vi
 # Check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
-
-# Make less more friendly for non-text input files, see lesspipe(1)
-[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
-
-# Enable programmable completion features
-if [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-fi

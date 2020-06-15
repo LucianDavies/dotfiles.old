@@ -1,12 +1,17 @@
 scriptencoding utf-8
 source ~/.config/nvim/plugins.vim
 
+
+
 " ============================================================================ "
 " ===                           EDITING OPTIONS                            === "
 " ============================================================================ "
 
 " Remap leader key to ,
-let g:mapleader=','
+let g:mapleader="\<Space>"
+
+" Disable line numbers
+set nonumber
 
 " Don't show last command
 set noshowcmd
@@ -40,15 +45,44 @@ set noruler
 " Only one line for command line
 set cmdheight=1
 
+" You will have bad experience for diagnostic messages when it's default 4000.
+set updatetime=300
+
 " === Completion Settings === "
 
 " Don't give completion messages like 'match 1 of 2'
 " or 'The only match'
 set shortmess+=c
 
+" Python
+let g:python_host_prog="/usr/bin/python"
+let g:python3_host_prog="/usr/local/bin/python3"
+set pyxversion=3
+
 " ============================================================================ "
 " ===                           PLUGIN SETUP                               === "
 " ============================================================================ "
+
+call coc#add_extension('coc-sh','coc-python','coc-diagnostic','coc-tsserver','coc-elixir','coc-go','coc-rls','coc-sql')
+
+" ToggleCoc: disable coc.nvim for large file
+function! ToggleCoc() abort
+  let g:trigger_size = get(g:, 'trigger_size', 0.5 * 1048576)
+  let size = getfsize(expand('<afile>'))
+  if (size > g:trigger_size) || (size == -2)
+    echohl WarningMsg
+    echomsg 'Coc.nvim was disabled for this large file'
+    echohl None
+    exec 'CocDisable'
+  else
+    exec 'CocEnable'
+  endif
+endfunction
+
+augroup Coc
+  au!
+  au BufReadPre * call ToggleCoc()
+augroup END
 
 " Wrap in try/catch to avoid errors on initial install before plugin is available
 try
@@ -119,15 +153,16 @@ endtry
 
 " === Coc.nvim === "
 " use <tab> for trigger completion and navigate to next complete item
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~ '\s'
-endfunction
-
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :
       \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
 
 "Close preview window when completion is done.
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
@@ -138,25 +173,12 @@ imap <C-k> <Plug>(neosnippet_expand_or_jump)
 smap <C-k> <Plug>(neosnippet_expand_or_jump)
 xmap <C-k> <Plug>(neosnippet_expand_target)
 
+" Enable neosnippet snipmate compatibility mode
+let g:neosnippet#enable_snipmate_compatibility = 1
 " Load custom snippets from snippets folder
-let g:neosnippet#snippets_directory='~/.config/nvim/snippets'
-
+let g:neosnippet#snippets_directory='~/.config/nvim/plugged/vim-snippets/snippets'
 " Hide conceal markers
 let g:neosnippet#enable_conceal_markers = 0
-
-" === NERDTree === "
-" Show hidden files/directories
-let g:NERDTreeShowHidden = 1
-
-" Remove bookmarks and help text from NERDTree
-let g:NERDTreeMinimalUI = 1
-
-" Custom icons for expandable/expanded directories
-let g:NERDTreeDirArrowExpandable = '⬏'
-let g:NERDTreeDirArrowCollapsible = '⬎'
-
-" Hide certain files and directories from NERDTree
-let g:NERDTreeIgnore = ['^\.DS_Store$', '^tags$', '\.git$[[dir]]', '\.idea$[[dir]]', '\.sass-cache$']
 
 " Wrap in try/catch to avoid errors on initial install before plugin is available
 try
@@ -181,7 +203,6 @@ let g:airline#extensions#default#layout = [['a', 'b', 'c'], ['x', 'z', 'warning'
 " 'nerdtree'  - Hide nerdtree status line
 " 'list'      - Only show file type plus current line number out of total
 let g:airline_filetype_overrides = {
-  \ 'nerdtree': [ get(g:, 'NERDTreeStatusline', ''), '' ],
   \ 'list': [ '%y', '%l/%L'],
   \ }
 
@@ -202,10 +223,6 @@ let g:airline#extensions#hunks#enabled=0
 catch
   echo 'Airline not installed. It should work after running :PlugInstall'
 endtry
-
-" === vim-javascript === "
-" Enable syntax highlighting for JSDoc
-let g:javascript_plugin_jsdoc = 1
 
 " === vim-jsx === "
 " Highlight jsx syntax even in non .jsx files
@@ -266,9 +283,6 @@ function! s:custom_jarvis_colors()
   hi VertSplit gui=NONE guifg=#17252c guibg=#17252c
   hi EndOfBuffer ctermbg=NONE ctermfg=NONE guibg=#17252c guifg=#17252c
 
-  " Customize NERDTree directory
-  hi NERDTreeCWD guifg=#99c794
-
   " Make background color transparent for git changes
   hi SignifySignAdd guibg=NONE
   hi SignifySignDelete guibg=NONE
@@ -308,12 +322,12 @@ endtry
 " ============================================================================ "
 
 " === Denite shorcuts === "
-"   ;         - Browser currently open buffers
+"   <leader>b - Browser currently open buffers
 "   <leader>t - Browse list of files in current directory
 "   <leader>g - Search current directory for occurences of given term and close window if no results
 "   <leader>j - Search current directory for occurences of word under cursor
-nmap ; :Denite buffer<CR>
-nmap <leader>t :DeniteProjectDir file/rec<CR>
+nmap <leader>b :Denite buffer -split=floating -winrow=1<CR>
+nmap <leader>t :Denite file/rec -split=floating -winrow=1<CR>
 nnoremap <leader>g :<C-u>Denite grep:. -no-empty<CR>
 nnoremap <leader>j :<C-u>DeniteCursorWord grep:.<CR>
 
@@ -375,11 +389,11 @@ function! s:denite_my_settings() abort
   \ denite#do_map('do_action', 'split')
 endfunction
 
-" === Nerdtree shorcuts === "
-"  <leader>n - Toggle NERDTree on/off
-"  <leader>f - Opens current file location in NERDTree
-nmap <leader>n :NERDTreeToggle<CR>
-nmap <leader>f :NERDTreeFind<CR>
+
+"   <Space> - PageDown
+"   -       - PageUp
+noremap = <PageDown>
+noremap - <PageUp>
 
 " Quick window switching
 nmap <C-h> <C-w>h
@@ -396,10 +410,7 @@ nmap <silent> <leader>dd <Plug>(coc-definition)
 nmap <silent> <leader>dr <Plug>(coc-references)
 nmap <silent> <leader>dj <Plug>(coc-implementation)
 nnoremap <silent> <leader>ds :<C-u>CocList -I -N --top symbols<CR>
-
-" === vim-better-whitespace === "
-"   <leader>y - Automatically remove trailing whitespace
-nmap <leader>y :StripWhitespace<CR>
+nmap <leader>rn <Plug>(coc-rename)
 
 " === Search shorcuts === "
 "   <leader>h - Find and replace
@@ -410,18 +421,29 @@ nmap <silent> <leader>/ :nohlsearch<CR>
 " Allows you to save files you opened without write permissions via sudo
 cmap w!! w !sudo tee %
 
+" === vim-better-whitespace === "
+"   <leader>y - Automatically remove trailing whitespace
+nmap <leader>y :StripWhitespace<CR>
+
 " Delete current visual selection and dump in black hole buffer before pasting
 " Used when you want to paste over something without it getting copied to
 " Vim's default buffer
 vnoremap <leader>p "_dP
 
+" Use K for show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if &filetype == 'vim'
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
 " ============================================================================ "
 " ===                                 MISC.                                === "
 " ============================================================================ "
-
-" Automaticaly close nvim if NERDTree is only thing left open
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-
 " === Search === "
 " ignore case when searching
 set ignorecase
@@ -445,9 +467,5 @@ if has('persistent_undo')
   set undoreload=10000
 endif
 set nobackup
+set nowritebackup
 set noswapfile
-
-" Reload icons after init source
-if exists('g:loaded_webdevicons')
-  call webdevicons#refresh()
-endif

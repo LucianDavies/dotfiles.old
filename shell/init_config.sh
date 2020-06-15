@@ -1,8 +1,10 @@
 INSTALLDIR=$PWD
 
 packages=(
-  "config"
-  "scripts"
+  #config
+  #scripts
+  #bin
+  ssh
 )
 
 function dotfiles_config_task_link() {
@@ -23,7 +25,6 @@ function dotfiles_config_task_link() {
 
   for i in "${packages[@]}"
   do
-    brew install $i
     if [ ! -d $HOME/.$i ]; then
         mkdir -p $HOME/.$i
     fi

@@ -1,0 +1,3 @@
+[submodule "scripts/git-fuzzy"]
+	path = scripts/git-fuzzy
+	url = https://github.com/bigH/git-fuzzy.git

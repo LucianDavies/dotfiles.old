@@ -1,0 +1,15 @@
+# Disable "took Xs"
+[cmd_duration]
+disabled = true
+
+[package]
+disabled = true
+
+[nodejs]
+disabled = true
+
+[elixir]
+disabled = true
+
+[python]
+disabled = true

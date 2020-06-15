@@ -4,19 +4,8 @@ case $- in
     *) return;;
 esac
 
-# Don't check mail when opening terminal.
-unset MAILCHECK
-export TODO="t"
-export SCM_CHECK=true
-export EDITOR=nvim
-export VISUAL=nvim
-export LC_ALL=en_US.UTF-8
-export LANG=en_US.UTF-8
-export TMUX_SESSION="$(whoami | sed 's/\./-/g')"
-export TODOTXT_CFG_FILE="$HOME/.config/todo/config"
-
 # starship prompt
-export STARSHIP_CONFIG=~/.config/starship.toml
+export STARSHIP_CONFIG=~/.starship.toml
 if type starship &> /dev/null; then
     eval "$(starship init bash)"
 fi
@@ -24,3 +13,20 @@ fi
 source ~/.scripts/default
 source ~/.scripts/aliases
 source ~/.scripts/functions
+
+# Use `fzf`
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+[ -f /usr/local/opt/asdf/asdf.sh ] && source /usr/local/opt/asdf/asdf.sh
+
+# brew shell completion - https://docs.brew.sh/Shell-Completion
+if type brew &>/dev/null; then
+  for COMPLETION in $(brew --prefix)/etc/bash_completion.d/*
+  do
+    [[ -f $COMPLETION ]] && source "$COMPLETION"
+  done
+  if [[ -f $(brew --prefix)/etc/profile.d/bash_completion.sh ]];
+  then
+    source "$(brew --prefix)/etc/profile.d/bash_completion.sh"
+  fi
+fi
+unset COMPLETION

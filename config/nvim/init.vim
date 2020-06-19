@@ -1,19 +1,18 @@
+set nocompatible
 scriptencoding utf-8
 source ~/.config/nvim/plugins.vim
-
-
 
 " ============================================================================ "
 " ===                           EDITING OPTIONS                            === "
 " ============================================================================ "
 
 " Remap leader key to ,
-let g:mapleader="\<Space>"
+let g:mapleader=","
 
-" Disable line numbers
+" Disable
 set nonumber
 
-" Don't show last command
+" Dline numberson't show last command
 set noshowcmd
 
 " Yank and paste with the system clipboard
@@ -54,35 +53,11 @@ set updatetime=300
 " or 'The only match'
 set shortmess+=c
 
-" Python
-let g:python_host_prog="/usr/bin/python"
-let g:python3_host_prog="/usr/local/bin/python3"
-set pyxversion=3
-
 " ============================================================================ "
 " ===                           PLUGIN SETUP                               === "
 " ============================================================================ "
 
-call coc#add_extension('coc-sh','coc-python','coc-diagnostic','coc-tsserver','coc-elixir','coc-go','coc-rls','coc-sql')
-
-" ToggleCoc: disable coc.nvim for large file
-function! ToggleCoc() abort
-  let g:trigger_size = get(g:, 'trigger_size', 0.5 * 1048576)
-  let size = getfsize(expand('<afile>'))
-  if (size > g:trigger_size) || (size == -2)
-    echohl WarningMsg
-    echomsg 'Coc.nvim was disabled for this large file'
-    echohl None
-    exec 'CocDisable'
-  else
-    exec 'CocEnable'
-  endif
-endfunction
-
-augroup Coc
-  au!
-  au BufReadPre * call ToggleCoc()
-augroup END
+call coc#add_extension('coc-python','coc-tsserver','coc-elixir','coc-go','coc-rls','coc-sql')
 
 " Wrap in try/catch to avoid errors on initial install before plugin is available
 try
@@ -153,19 +128,24 @@ endtry
 
 " === Coc.nvim === "
 " use <tab> for trigger completion and navigate to next complete item
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+
 "Close preview window when completion is done.
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+
+if exists('*complete_info')
+  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+else
+  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+endif
 
 " === NeoSnippet === "
 " Map <C-k> as shortcut to activate snippet if available
@@ -200,7 +180,6 @@ let g:airline#extensions#tabline#formatter = 'unique_tail'
 let g:airline#extensions#default#layout = [['a', 'b', 'c'], ['x', 'z', 'warning', 'error']]
 
 " Customize vim airline per filetype
-" 'nerdtree'  - Hide nerdtree status line
 " 'list'      - Only show file type plus current line number out of total
 let g:airline_filetype_overrides = {
   \ 'list': [ '%y', '%l/%L'],
@@ -379,6 +358,8 @@ function! s:denite_my_settings() abort
   \ denite#do_map('do_action', 'preview')
   nnoremap <silent><buffer><expr> i
   \ denite#do_map('open_filter_buffer')
+  nnoremap <silent><buffer><expr> <Space>
+  \ denite#do_map('toggle_select').'j'
   nnoremap <silent><buffer><expr> <C-o>
   \ denite#do_map('open_filter_buffer')
   nnoremap <silent><buffer><expr> <C-t>
@@ -389,11 +370,28 @@ function! s:denite_my_settings() abort
   \ denite#do_map('do_action', 'split')
 endfunction
 
+" netrw
+let g:netrw_liststyle = 3
+let g:netrw_winsize = 25
 
-"   <Space> - PageDown
-"   -       - PageUp
-noremap = <PageDown>
-noremap - <PageUp>
+noremap Q <nop>
+
+" Center search results
+nnoremap <silent> n nzz
+nnoremap <silent> N Nzz
+nnoremap <silent> * *zz
+nnoremap <silent> # #zz
+nnoremap <silent> g* g*zz
+
+autocmd BufReadPost *
+\ if &ft != 'gitcommit' && line("'\"") > 0 && line("'\"") <= line("$") |
+\   exe "normal g`\"" |
+\ endif
+
+"" normal
+" easier beginning/ending
+noremap H ^
+noremap L $
 
 " Quick window switching
 nmap <C-h> <C-w>h
@@ -410,7 +408,6 @@ nmap <silent> <leader>dd <Plug>(coc-definition)
 nmap <silent> <leader>dr <Plug>(coc-references)
 nmap <silent> <leader>dj <Plug>(coc-implementation)
 nnoremap <silent> <leader>ds :<C-u>CocList -I -N --top symbols<CR>
-nmap <leader>rn <Plug>(coc-rename)
 
 " === Search shorcuts === "
 "   <leader>h - Find and replace
@@ -444,6 +441,7 @@ endfunction
 " ============================================================================ "
 " ===                                 MISC.                                === "
 " ============================================================================ "
+
 " === Search === "
 " ignore case when searching
 set ignorecase

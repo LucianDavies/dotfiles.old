@@ -23,6 +23,7 @@ call plug#begin('~/.config/nvim/plugged')
 " === Editing Plugins === "
 " Trailing whitespace highlighting & automatic fixing
 Plug 'ntpeters/vim-better-whitespace'
+Plug 'tpope/vim-vinegar'
 
 " auto-close plugin
 Plug 'jiangmiao/auto-pairs'

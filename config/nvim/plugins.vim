@@ -20,34 +20,22 @@ endif
 
 call plug#begin('~/.config/nvim/plugged')
 
-" === Editing Plugins === "
-" Trailing whitespace highlighting & automatic fixing
-Plug 'ntpeters/vim-better-whitespace'
+" === Base === "
+Plug 'tpope/vim-sensible'       " Defaults everyone can agree on
+Plug 'tpope/vim-sleuth'         " Heuristic formatting
 Plug 'tpope/vim-vinegar'
-
-" auto-close plugin
-Plug 'jiangmiao/auto-pairs'
-Plug 'reedes/vim-pencil'
-
+Plug 'tpope/vim-eunuch'
+" === Editing Plugins === "
 " Intellisense Engine
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-" Denite - Fuzzy finding, buffer management
-Plug 'Shougo/denite.nvim'
-
-" Snippet support
-Plug 'Shougo/neosnippet'
-Plug 'honza/vim-snippets'
-
-" vim-test
-Plug 'janko/vim-test'
 " === Git Plugins === "
 " Enable git changes to be shown in sign column
 Plug 'mhinz/vim-signify'
 Plug 'tpope/vim-fugitive'
 
 " === Language Plugins === "
-Plug 'sheerun/vim-polyglot'
+Plug 'sheerun/vim-polyglot'     " Syntax highlighting pack
 
 " === UI === "
 " Colorscheme

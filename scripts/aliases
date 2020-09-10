@@ -1,7 +1,0 @@
-alias rm='rm -i'
-alias cp='cp -i'
-alias mv='mv -i'
-alias vim='nvim'
-alias top="vtop --theme=wizard"
-alias reload='source ~/.bashrc'
-alias keylist="ssh-add -L"

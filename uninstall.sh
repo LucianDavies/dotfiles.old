@@ -8,8 +8,8 @@ INSTALLDIR=$PWD
 
 CORE_LIBS=(
   os
-  #brew
-  #node
+  applications
+  dev_languages
   config
 )
 

@@ -1,30 +1,25 @@
 #!/bin/bash
 
 packages=(
-"gpg"
 "starship"
+"gnupg"
 "tmux"
 "neovim"
 "ripgrep"
 "fzf"
-"z"
-"jq"
-"todo-txt"
-"gawk"
 "coreutils"
 "curl"
-"postgres"
-"git"
-"reattach-to-user-namespace"
 "diff-so-fancy"
 "asdf"
+"azure-cli"
+"gh"
 )
 
 casks=(
 "font-hack-nerd-font"
 )
 
-function dotfiles_brew_init {
+function dotfiles_applications_init {
   if test ! $(which brew); then
       echo "No Homebrew!! Installing..."
 
@@ -58,7 +53,7 @@ function dotfiles_brew_init {
   brew doctor
 }
 
-function dotfiles_brew_down() {
+function dotfiles_applications_down() {
   echo "Brew Self distructing...."
   if test $(which brew); then
       if [[ ( "${OS_TYPE}" == "linux" && "${OS_WSL}" == 0 ) && ( "${OS_DIST_TYPE}" == "ubuntu" || "${OS_DIST_TYPE}" == "debian" ) ]]; then

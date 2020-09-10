@@ -1,15 +1,14 @@
 #!/bin/sh
 echo "---------------------------------------------------------"
-echo "$(tput setaf 2) Minion: Greetings. Preparing to setup up your environment.$(tput sgr 0)"
+echo "$(tput setaf 2) LULU: Greetings. Preparing to setup up your environment.$(tput sgr 0)"
 echo "---------------------------------------------------------"
 
 INSTALLDIR=$PWD
 
 CORE_LIBS=(
   os
-  #brew
-  #asdf
-  #rust
+  #applications
+  dev_languages
   config
 )
 
@@ -21,7 +20,7 @@ done
 source ~/.bashrc
 
 echo "---------------------------------------------------------"
-echo "$(tput setaf 2) Minion: System installation complete. Enjoy.$(tput sgr 0)"
+echo "$(tput setaf 2) LULU: System installation complete. Enjoy.$(tput sgr 0)"
 echo "---------------------------------------------------------"
 
 exit 0

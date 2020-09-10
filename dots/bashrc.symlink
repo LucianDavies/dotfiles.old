@@ -1,0 +1,23 @@
+# If not running interactively, don't do anything
+case $- in
+  *i*) ;;
+    *) return;;
+esac
+
+alias python=python3
+alias vim="nvim"
+alias top="vtop --theme=wizard"
+
+# starship prompt
+export STARSHIP_CONFIG=~/.starship.toml
+if type starship &> /dev/null; then
+    eval "$(starship init bash)"
+fi
+
+if [ `which tmux 2> /dev/null` -a -z "$TMUX" ]; then
+    echo "$TMUX_SESSION"
+  tmux attach-session -t "$TMUX_SESSION" || tmux new-session -s "$TMUX_SESSION"
+fi
+
+source `brew --prefix asdf`/asdf.sh
+

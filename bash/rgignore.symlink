@@ -1,7 +1,0 @@
-.git
-.svn
-.cache
-LICENSE
-dist
-node_modules
-package-lock.json

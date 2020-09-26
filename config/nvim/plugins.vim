@@ -25,10 +25,17 @@ Plug 'tpope/vim-sensible'       " Defaults everyone can agree on
 Plug 'tpope/vim-sleuth'         " Heuristic formatting
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-eunuch'
+Plug 'tpope/vim-surround'
+Plug 'jiangmiao/auto-pairs'
+Plug 'haya14busa/incsearch.vim'
+Plug 'jreybert/vimagit'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'christoomey/vim-tmux-navigator'
 " === Editing Plugins === "
 " Intellisense Engine
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
+Plug 'antoinemadec/coc-fzf', { 'branch': 'release' }
 " === Git Plugins === "
 " Enable git changes to be shown in sign column
 Plug 'mhinz/vim-signify'

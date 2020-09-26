@@ -1,0 +1,62 @@
+[color]
+	ui = true
+[alias]
+[merge]
+    tool = vimdiff
+
+[core]
+	pager = diff-so-fancy | less --tabs=4 -RFX
+	excludesfile = ~/.gitignore_global
+[push]
+	default = simple
+[advice]
+	statusHints = false
+[diff]
+	mnemonicprefix = true
+	algorithm = patience
+	compactionHeuristic = true
+	indentHeuristic = on
+[format]
+    subjectprefix = git
+
+[rerere]
+	enabled = 1
+[status]
+    showUntrackedFiles = all
+[user]
+	email = tldkhati@gmail.com
+	name = LucianDavies
+[pager]
+	diff = diff-so-fancy | less --tabs=2 -RFX
+	show = diff-so-fancy | less --tabs=2 -RFX
+[diff-so-fancy]
+	stripLeadingSymbols = false
+	markEmptyLines = false
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+[color "diff-highlight"]
+	oldNormal = red bold
+	oldHighlight = red bold 52
+	newNormal = green bold
+	newHighlight = green bold 22
+[color "diff"]
+	meta = 39
+	frag = magenta bold
+	commit = 222 bold
+	old = red bold
+	new = green bold
+	whitespace = red reverse
+[pull]
+	rebase = true
+[color "status"]
+	added = green
+	updated = cyan
+	changed = red
+	untracked = yellow
+[init]
+	templateDir = /Users/tonderai/.git-template
+[commit]
+	verbose = true

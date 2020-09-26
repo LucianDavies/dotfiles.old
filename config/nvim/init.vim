@@ -1,35 +1,26 @@
 scriptencoding utf-8
 source ~/.config/nvim/plugins.vim
 
+set nocompatible
+set autoread
+
 " ## Search & replace
 set ignorecase
 set smartcase
 set gdefault
 set inccommand=nosplit " Show replace live preview
 
-" automatically dont use vim's crazy regexes
-nnoremap / /\v
-vnoremap / /\v
-
-" Substitute.
-xnoremap s :s//g<Left><Left>
-
 let g:netrw_browse_split = 0
+let g:netrw_altfile = 1
+let g:netrw_liststyle = 3
 
-" Switch between the last two files
-nnoremap <Leader><Leader> <C-^>
-
-" Open new split panes to right and bottom, which feels more natural
-set splitbelow
-set splitright
-
-" Quicker window movement
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-h> <C-w>h
-nnoremap <C-l> <C-w>l
-
-
+if has('unnamedplus')
+	" set clipboard& clipboard+=unnamedplus
+	set clipboard& clipboard+=unnamedplus,unnamed
+else
+	" set clipboard& clipboard+=unnamed
+	set clipboard& clipboard+=unnamed
+endif
 " Set backups
 if has('persistent_undo')
   set undofile
@@ -38,6 +29,32 @@ if has('persistent_undo')
 endif
 set nobackup
 set noswapfile
+
+inoremap <silent><expr> <TAB>
+  \ pumvisible() ? "\<C-n>" :
+  \ <SID>check_back_space() ? "\<TAB>" :
+  \ coc#refresh()
+
+" Replace all is aliased to S.
+nnoremap S :%s//g<Left><Left>
+
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+nnoremap <Tab> :bnext<CR>
+nnoremap <S-Tab> :bprevious<CR>
+
+command! PrTemplate read .github/pull_request_template.md
+command! Bufonly %bd | e#
+command! Changed execute "args! " . join(systemlist("git ls-files --modified --others --exclude-standard"), " ")
+command! Check %s/\[ \]/[x]/gc
+
+
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call <SID>show_documentation()<CR>
 
 
 try
@@ -172,3 +189,20 @@ try
 catch
   colorscheme slate
 endtry
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Helper functions
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+
+function! s:show_documentation()
+    if (index(['vim','help'], &filetype) >= 0)
+        execute 'h '.expand('<cword>')
+    else
+        call CocAction('doHover')
+    endif
+endfunction

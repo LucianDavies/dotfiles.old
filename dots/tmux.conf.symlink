@@ -2,11 +2,10 @@
 # ***    PLUGINS   *** #
 ########################
 set -g @plugin 'tmux-plugins/tmux-yank'
-
 ########################
 # ***    DISPLAY   *** #
 ########################
-
+set -g default-terminal 'screen-256color'
 # Set tmux to display in 256 colors
 # This is what TERM will be inside the tmux session
 # set-option -g default-terminal "tmux-256color"
@@ -27,6 +26,13 @@ set -g mode-style "fg=colour3"
 # ***    GENERAL   *** #
 ########################
 
+# smart pane switching with awareness of vim splits
+bind -n C-h run "(tmux display-message -p '#{pane_current_command}' | grep -iq vim && tmux send-keys C-h) || tmux select-pane -L"
+bind -n C-j run "(tmux display-message -p '#{pane_current_command}' | grep -iq vim && tmux send-keys C-j) || tmux select-pane -D"
+bind -n C-k run "(tmux display-message -p '#{pane_current_command}' | grep -iq vim && tmux send-keys C-k) || tmux select-pane -U"
+bind -n C-l run "(tmux display-message -p '#{pane_current_command}' | grep -iq vim && tmux send-keys C-l) || tmux select-pane -R"
+bind -n C-\ run "(tmux display-message -p '#{pane_current_command}' | grep -iq vim && tmux send-keys 'C-\\') || tmux select-pane -l"
+
 # Start windows numbering at 1
 set -g base-index 1
 
@@ -42,19 +48,17 @@ set -g history-limit 10000
 # shorten command delay
 set -sg escape-time 1
 
+set-option -g default-command "reattach-to-user-namespace -l $SHELL"
+
 # reload ~/.tmux.conf using PREFIX r
 bind r source-file ~/.tmux.conf \; display "tmux.conf source"
 
 # Bind <prefix>- to split window horizontally
-bind - split-window -v -c "#{pane_current_path}"
+bind \ split-window -v -c "#{pane_current_path}"
 # Bind <prefix>| to split window vertically
 bind | split-window -h -c "#{pane_current_path}"
 
-# Map vim movement keys as pane movement keys with prefix
-bind h select-pane -L
-bind j select-pane -D
-bind k select-pane -U
-bind l select-pane -R
+setw -g mode-keys vi
 
 # resize panes using PREFIX H, J, K, L
 bind H resize-pane -L 5
@@ -64,14 +68,6 @@ bind L resize-pane -R 5
 
 # Quickly edit todo list
 bind-key t split-window -h "vim ~/todo.md"
-
-if-shell "uname | grep -q Darwin" {
-  bind-key -T copy-mode-vi 'y' send -X copy-pipe-and-cancel 'reattach-to-user-namespace pbcopy'
-  bind-key -T copy-mode-vi Enter send -X copy-pipe-and-cancel 'reattach-to-user-namespace pbcopy'
-} {
-  bind-key -T copy-mode-vi 'y' send -X copy-pipe-and-cancel 'xclip -in -selection clipboard'
-  bind-key -T copy-mode-vi Enter send -X copy-pipe-and-cancel 'xclip -in -selection clipboard'
-}
 
 # visual notification of activity in other windows
 setw -g monitor-activity on

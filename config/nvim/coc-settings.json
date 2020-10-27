@@ -1,10 +1,19 @@
 {
+  "snippets.userSnippetsDirectory": "~/.config/nvim/snips",
+  "snippets.ultisnips.directories": ["UltiSnips"],
+  "list.source.files.excludePatterns": [
+    "**/node_modules/**",
+    "**/node_modules/**/.*",
+    "**/node_modules/**/.*/**",
+    "**/.git/**"
+  ],
   "suggest.maxCompleteItemCount": 20,
   "prettier.tabWidth": 2,
   "coc.preferences.formatOnSaveFiletypes": [
     "javascript",
     "typescript",
     "typescriptreact",
+    "sh",
     "json",
     "go",
     "elixir",

@@ -1,0 +1,90 @@
+#!/bin/bash
+fpr() {
+  base_command="gh pr list --limit 100"
+  out=$($base_command 2>/dev/null | \
+      fzf $1 \
+      --preview="gh pr view {1}" \
+      --expect=ctrl-b,ctrl-m,ctrl-d,ctrl-r \
+      --header='enter: open in browser, C-b: checkout, C-d: diff, C-r: review, C-a: all, C-o: open, C-c: closed, C-g: merged' \
+      --bind "ctrl-a:reload($base_command --state all),ctrl-o:reload($base_command --state open),ctrl-c:reload($base_command --state closed),ctrl-g:reload($base_command --state merged)")
+  cmd=$(echo $out | cut -f 1 -d ' ')
+  pr=$(echo $out | cut -f 2 -d ' ')
+
+  if [ "$cmd" = "ctrl-m" ]; then
+      gh pr view --web $pr
+  fi
+  if [ "$cmd" = "ctrl-d" ]; then
+      $EDITOR <(gh pr diff $pr)
+  fi
+  if [ "$cmd" = "ctrl-r" ]; then
+      $EDITOR <(gh pr diff $pr)
+      gh pr review $pr
+  fi
+  if [ "$cmd" = "ctrl-b" ]; then
+      gh pr checkout $pr
+  fi
+}
+
+fgr() {
+  base_command="git --no-pager branch"
+  out=$($base_command 2>/dev/null | \
+      fzf $1 \
+      --preview="git show-branch {1}" \
+      --expect=ctrl-b,ctrl-m,ctrl-d,ctrl-r \
+      --header='enter: open in browser, C-b: checkout, C-d: delete, C-r: remote, C-a: all, C-l: local' \
+      --bind "ctrl-a:reload($base_command --all),ctrl-o:reload($base_command --r),ctrl-l:reload($base_command),ctrl-g:reload($base_command --state merged)")
+  cmd=$(echo $out | cut -f 1 -d ' ')
+  pr=$(echo $out | cut -f 2 -d ' ')
+
+  if [ "$cmd" = "ctrl-m" ]; then
+        echo $pr
+  fi
+  if [ "$cmd" = "ctrl-d" ]; then
+        echo $pr
+  fi
+  if [ "$cmd" = "ctrl-b" ]; then
+        echo $pr
+  fi
+}
+
+#Example configuration has been installed to:
+
+# jira issue | sed '1,2d;$d' | fzf --ansi | cut -d" " -f3
+
+# find a ticket on jira then checkout a branch preparing a draft pr on github and starting timer
+# 
+
+#watson( {
+#  if [[ $# < 1 ]]
+#  then
+#    echo "Usage:"
+#    echo " $0 <command>"
+#    exit 1
+#  fi
+#
+#  case $1 in
+#    "stop")
+#      watson stop || true
+#      notify-send "Timer" "Timer stopped"
+#      ;;
+#    "start")
+#      watson stop 2>&1 > /dev/null || true
+#      watson projects | fzf --print-query | xargs watson start
+#      notify-send "Timer" "$(watson status -p) started"
+#      ;;
+#    "restart")
+#      watson restart && notify-send "Timer" "$(watson status -p) started"
+#      ;;
+#    "notify-status")
+#      notify-send "Timer" "$(watson status)"
+#      ;;
+#    "logday")
+#      watson log -d
+#      ;;
+#    *)
+#      echo "Unknown command $1"
+#      exit 2
+#      ;;
+#  esac
+#
+#}

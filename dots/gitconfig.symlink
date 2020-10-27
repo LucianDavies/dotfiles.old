@@ -2,10 +2,14 @@
 	ui = true
 [alias]
 [merge]
-    tool = vimdiff
+tool = vim_mergetool
+conflictstyle = diff3
+
+[mergetool "vim_mergetool"]
+cmd = vim -f -c "MergetoolStart" "$MERGED" "$BASE" "$LOCAL" "$REMOTE"
+trustExitCode = true
 
 [core]
-	pager = diff-so-fancy | less --tabs=4 -RFX
 	excludesfile = ~/.gitignore_global
 [push]
 	default = simple

@@ -2,25 +2,20 @@ scriptencoding utf-8
 source ~/.config/nvim/plugins.vim
 
 set nocompatible
+filetype plugin indent on
 set autoread
 
 " ## Search & replace
-set ignorecase
 set smartcase
+set ignorecase
 set gdefault
 set inccommand=nosplit " Show replace live preview
 
 let g:netrw_browse_split = 0
 let g:netrw_altfile = 1
 let g:netrw_liststyle = 3
+let g:netrw_bufsettings = "noma nomod nonu nobl nowrap ro nornu buftype=nofile"
 
-if has('unnamedplus')
-	" set clipboard& clipboard+=unnamedplus
-	set clipboard& clipboard+=unnamedplus,unnamed
-else
-	" set clipboard& clipboard+=unnamed
-	set clipboard& clipboard+=unnamed
-endif
 " Set backups
 if has('persistent_undo')
   set undofile
@@ -30,32 +25,33 @@ endif
 set nobackup
 set noswapfile
 
+" AutoComplete "
 inoremap <silent><expr> <TAB>
-  \ pumvisible() ? "\<C-n>" :
-  \ <SID>check_back_space() ? "\<TAB>" :
-  \ coc#refresh()
+      \ pumvisible() ? coc#_select_confirm() :
+      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
 
-" Replace all is aliased to S.
-nnoremap S :%s//g<Left><Left>
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+let g:coc_snippet_next = '<tab>'
 
 " GoTo code navigation.
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
-
-nnoremap <Tab> :bnext<CR>
-nnoremap <S-Tab> :bprevious<CR>
-
-command! PrTemplate read .github/pull_request_template.md
-command! Bufonly %bd | e#
-command! Changed execute "args! " . join(systemlist("git ls-files --modified --others --exclude-standard"), " ")
-command! Check %s/\[ \]/[x]/gc
-
+nmap <leader>rn <Plug>(coc-rename)
+nmap <leader>f <Plug>(coc-format-selected)
 
 " Use K to show documentation in preview window.
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 
+let g:mergetool_layout = 'mr'
+let g:mergetool_prefer_revision = 'local'
 
 try
 " === Vim airline ==== "
@@ -206,3 +202,20 @@ function! s:show_documentation()
         call CocAction('doHover')
     endif
 endfunction
+
+
+augroup filetypedetect
+  autocmd!
+  autocmd BufRead,BufNewFile jrnl*.txt,TODO setfiletype markdown
+  autocmd BufRead,BufNewFile .{babel,eslint,stylelint,jshint}rc,.tern-* setfiletype json
+  autocmd BufRead,BufNewFile .prettierrc setfiletype yaml
+  autocmd BufRead,BufNewFile .envrc setfiletype bash
+  autocmd BufRead,BufNewFile *.conf setfiletype conf
+augroup END
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Search
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+

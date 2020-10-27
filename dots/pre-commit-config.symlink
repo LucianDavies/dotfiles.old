@@ -1,0 +1,3 @@
+An error has occurred: InvalidConfigError: 
+=====> .pre-commit-config.yaml does not exist
+Check the log at /Users/tonderai/.cache/pre-commit/pre-commit.log

@@ -21,34 +21,37 @@ endif
 call plug#begin('~/.config/nvim/plugged')
 
 " === Base === "
-Plug 'tpope/vim-sensible'       " Defaults everyone can agree on
-Plug 'tpope/vim-sleuth'         " Heuristic formatting
-Plug 'tpope/vim-vinegar'
-Plug 'tpope/vim-eunuch'
-Plug 'tpope/vim-surround'
-Plug 'jiangmiao/auto-pairs'
-Plug 'haya14busa/incsearch.vim'
-Plug 'jreybert/vimagit'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-Plug 'christoomey/vim-tmux-navigator'
-" === Editing Plugins === "
-" Intellisense Engine
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'antoinemadec/coc-fzf', { 'branch': 'release' }
-" === Git Plugins === "
-" Enable git changes to be shown in sign column
-Plug 'mhinz/vim-signify'
-Plug 'tpope/vim-fugitive'
-
-" === Language Plugins === "
-Plug 'sheerun/vim-polyglot'     " Syntax highlighting pack
-
-" === UI === "
-" Colorscheme
+""Plug 'tpope/vim-sensible'       " Defaults everyone can agree on
+""Plug 'tpope/vim-sleuth'         " Heuristic formatting
+""Plug 'tpope/vim-vinegar'
+""Plug 'tpope/vim-eunuch'
+""Plug 'tpope/vim-surround'
+""Plug 'jiangmiao/auto-pairs'
+""Plug 'haya14busa/incsearch.vim'
+""Plug 'jreybert/vimagit'
+""Plug 'jremmen/vim-ripgrep'
+""Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+""Plug 'junegunn/fzf.vim'
+""Plug 'honza/vim-snippets'
+""Plug 'christoomey/vim-tmux-navigator'
+""Plug 'samoshkin/vim-mergetool'
+""" === Editing Plugins === "
+""" Intellisense Engine
+""Plug 'neoclide/coc.nvim', {'branch': 'release'}
+""Plug 'antoinemadec/coc-fzf', { 'branch': 'release' }
+""" === Git Plugins === "
+""" Enable git changes to be shown in sign column
+""Plug 'mhinz/vim-signify'
+""Plug 'tpope/vim-fugitive'
+""Plug 'christoomey/vim-conflicted'
+""" === Language Plugins === "
+""Plug 'sheerun/vim-polyglot'     " Syntax highlighting pack
+""
+""" === UI === "
+""" Colorscheme
 Plug 'mhartington/oceanic-next'
 Plug 'morhetz/gruvbox'
-" Customized vim status line
+""" Customized vim status line
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 

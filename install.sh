@@ -7,7 +7,7 @@ INSTALLDIR=$PWD
 
 CORE_LIBS=(
   os
-  #applications
+  applications
   dev_languages
   config
 )

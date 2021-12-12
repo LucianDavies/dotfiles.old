@@ -1,66 +1,31 @@
-[color]
-	ui = true
 [alias]
-[merge]
-tool = vim_mergetool
-conflictstyle = diff3
-
-[mergetool "vim_mergetool"]
-cmd = vim -f -c "MergetoolStart" "$MERGED" "$BASE" "$LOCAL" "$REMOTE"
-trustExitCode = true
-
+    	s = status
+	c = checkout
+	m = !sh -c 'git checkout $(git defaultbranch)'
+	b = branch
+	r = remote -v
+	last = log -1 HEAD # View last commit message
+	tree = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%C(bold blue)<%an>%Creset' --abbrev-commit # Generates a history tree
+	cleanmerged = !sh -c 'git branch --merged $(git defaultbranch) | grep -v $(git defaultbranch) | xargs -I "{}" git branch -D "{}"' -
+	sync = !sh -c 'git fetch && git remote prune origin && git cleanmerged' # Synchronize local machine to origin's state.
+	new = !sh -c 'git log $1@{1}..$1@{0} "$@"' # View new commits
+	defaultbranch = !sh -c 'git symbolic-ref refs/remotes/origin/HEAD | sed "s@^refs/remotes/origin/@@"'
+	cleanbranch = !sh -c 'git checkout $(git defaultbranch) && git pull origin $(git defaultbranch) && git checkout --b $0' # Switch to a new feature branch quickly
+	undo = reset --soft HEAD^
+        log-standup = !git log --since yesterday --pretty=short --author $(git config user.email)
+	edit-unmerged = !"f() { git ls-files --unmerged | cut -f2 | sort -u ; }; $EDITOR `f`"
+	add-unmerged = !"f() { git ls-files --unmerged | cut -f2 | sort -u ; }; git add `f`"
+	ours   = !"f() { git checkout --ours $@ && git add $@; }; f"
+	theirs = !"f() { git checkout --theirs $@ && git add $@; }; f"
+[user]
+	name = LucianDavies
+	email = 5219738+LucianDavies@users.noreply.github.com 
 [core]
 	excludesfile = ~/.gitignore_global
-[push]
-	default = simple
-[advice]
-	statusHints = false
-[diff]
-	mnemonicprefix = true
-	algorithm = patience
-	compactionHeuristic = true
-	indentHeuristic = on
-[format]
-    subjectprefix = git
-
-[rerere]
-	enabled = 1
-[status]
-    showUntrackedFiles = all
-[user]
-	email = tldkhati@gmail.com
-	name = LucianDavies
-[pager]
-	diff = diff-so-fancy | less --tabs=2 -RFX
-	show = diff-so-fancy | less --tabs=2 -RFX
-[diff-so-fancy]
-	stripLeadingSymbols = false
-	markEmptyLines = false
-[filter "lfs"]
-	required = true
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-[color "diff-highlight"]
-	oldNormal = red bold
-	oldHighlight = red bold 52
-	newNormal = green bold
-	newHighlight = green bold 22
-[color "diff"]
-	meta = 39
-	frag = magenta bold
-	commit = 222 bold
-	old = red bold
-	new = green bold
-	whitespace = red reverse
+	editor = vim
+[url "git@github.com:"]
+	insteadOf = https://github.com
 [pull]
 	rebase = true
-[color "status"]
-	added = green
-	updated = cyan
-	changed = red
-	untracked = yellow
 [init]
-	templateDir = /Users/tonderai/.git-template
-[commit]
-	verbose = true
+	defaultBranch = main

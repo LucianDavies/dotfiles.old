@@ -1,6 +1,0 @@
-  A Cloud Guru — S3 Masterclass.  9 hours. +Micro +CertifiedSolutionArchitect
-  A Cloud Guru — Introduction to Amazon RDS.  3.5 hours. +Micro +CertifiedSolutionArchitect
-  Udemy — Amazon EC2 Masterclass (with Auto Scaling & Load Balancer).  5 hours. +Micro +CertifiedSolutionArchitect
-  Udemy — AWS Certified Solutions Architect Associate 2019.  18 hours +Micro +CertifiedSolutionArchitect
-  Udemy — AWS Certified Solutions Architect Associate Practice Exams. 6 hours. +Micro +CertifiedSolutionArchitect
-  Recap.  6 hours. +Micro +CertifiedSolutionArchitect

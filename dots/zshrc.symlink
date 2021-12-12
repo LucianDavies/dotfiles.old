@@ -1,0 +1,18 @@
+# I like vim
+export EDITOR="vim"
+
+# starship prompt
+export STARSHIP_CONFIG=~/.starship.toml
+if type starship &> /dev/null; then
+    eval "$(starship init zsh)"
+fi
+
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# python3
+# brew install python3
+export PATH="/usr/local/opt/python3/bin:$PATH"
+
+#source ~/.docker.zshrc
+source ~/.aliases.zshrc

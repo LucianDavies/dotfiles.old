@@ -72,6 +72,8 @@ function dotfiles_os_init() {
 
   echo "OS\t: ${OS_TYPE} - ${OS_DIST_TYPE} - WSL=${OS_WSL}"
   echo "OS Name\t: ${OS_DIST_NAME}"
+
+  echo "----------------------------------------------------"
 }
 
 function dotfiles_os_down() {

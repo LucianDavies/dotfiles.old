@@ -21,4 +21,3 @@ done
 echo "---------------------------------------------------------"
 echo "$(tput setaf 2)LULU: Removed all configs and files. GoodBye.$(tput sgr 0)"
 echo "---------------------------------------------------------"
-exit 0

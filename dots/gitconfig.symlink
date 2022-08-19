@@ -12,20 +12,29 @@
 	defaultbranch = !sh -c 'git symbolic-ref refs/remotes/origin/HEAD | sed "s@^refs/remotes/origin/@@"'
 	cleanbranch = !sh -c 'git checkout $(git defaultbranch) && git pull origin $(git defaultbranch) && git checkout --b $0' # Switch to a new feature branch quickly
 	undo = reset --soft HEAD^
+	clone-all = clone --recurse-submodules
+  	pull-all = pull --recurse-submodules
         log-standup = !git log --since yesterday --pretty=short --author $(git config user.email)
 	edit-unmerged = !"f() { git ls-files --unmerged | cut -f2 | sort -u ; }; $EDITOR `f`"
 	add-unmerged = !"f() { git ls-files --unmerged | cut -f2 | sort -u ; }; git add `f`"
-	ours   = !"f() { git checkout --ours $@ && git add $@; }; f"
-	theirs = !"f() { git checkout --theirs $@ && git add $@; }; f"
+	ours   = "!f() { git checkout --ours $@ && git add $@; }; f"
+	theirs = "!f() { git checkout --theirs $@ && git add $@; }; f"
+	refresh = "!f() { git rebase HEAD~$1 --ignore-date; }; f"
+	changed-files = "!f() { git diff --name-only $1; }; f"
+	submodules-add = "!f() { git submodule foreach 'git add .' #recursively add files in submodules }; f"
+	submodules-commit = "!f() { git submodule foreach 'git commit -a -m "Altered submodule" || :' #recursively commit files in submodules }; f"
+	submodules-push = "!f() { git submodule foreach 'git push --recurse-submodules=on-demand' #recursively push files in submodules }; f"
+	root = rev-parse --show-toplevel
+
 [user]
 	name = LucianDavies
 	email = 5219738+LucianDavies@users.noreply.github.com 
 [core]
 	excludesfile = ~/.gitignore_global
-	editor = vim
-[url "git@github.com:"]
-	insteadOf = https://github.com
+	editor = nvim
 [pull]
 	rebase = true
 [init]
 	defaultBranch = main
+[push]
+	default = current

@@ -1,0 +1,13 @@
+# --- alias -----
+alias vi="nvim"
+alias vim="nvim"
+alias cp='cp -i'
+alias mv='mv -i'
+cd() { builtin cd "$@"; ls; }               # Always list directory contents upon 'cd'
+alias c='clear'                  	    # c: Clear terminal display
+alias timestamp='date +"%Y-%m-%d %H:%M:%S"'
+alias wstart="watson start"
+alias wstop="watson stop"
+alias td="tmux detach"
+alias work="tmux new-session -A -s work"
+alias endwork="tmux kill-session -t work"

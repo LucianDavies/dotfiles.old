@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 echo "---------------------------------------------------------"
 echo "$(tput setaf 2) LULU: Greetings. Preparing to setup up your environment.$(tput sgr 0)"
 echo "---------------------------------------------------------"
@@ -15,8 +15,8 @@ echo "---------------------------------------------------------"
 INSTALLDIR=$PWD
 
 CORE_LIBS=(
-  #os
-  #applications
+  ##os
+  ##applications
   config
 )
 
@@ -28,5 +28,4 @@ done
 echo "---------------------------------------------------------"
 echo "$(tput setaf 2) LULU: System installation complete. Enjoy.$(tput sgr 0)"
 echo "---------------------------------------------------------"
-
-exit 0
+exit

@@ -1,10 +1,12 @@
+#!/bin/bash
+
 INSTALLDIR=$PWD
 
-packages=()
+packages=(config)
 
 function dotfiles_config_task_link() {
   echo "---------------------------------------------------------"
-  echo "$(tput setaf 2) LULU: Linking rc files.$(tput sgr 0)"
+  echo "$(tput setaf 2) LULU: Linking dot files.$(tput sgr 0)"
   echo "---------------------------------------------------------"
 
   linkables=$( find -H "$INSTALLDIR" -maxdepth 3 -name '*.symlink' )
@@ -56,20 +58,10 @@ function dotfiles_config_task_unlink() {
   done
 }
 
-function dotfiles_config_post_task_link() {
-  echo "Manually install fzf keybindings with"
-  echo "/usr/local/opt/fzf/install"
-  [ -f /usr/local/opt/fzf/install ] && /usr/local/opt/fzf/install --key-bindings --completion --no-update-rc
-  
-  for f in ~/.config/bin/*;do chmod +x $f;done
-}
-
 
 function dotfiles_config_init() {
   dotfiles_config_task_link
-  #dotfiles_config_post_task_link
   source ~/.zshrc
-  echo "Hello"
 }
 
 function dotfiles_config_down() {

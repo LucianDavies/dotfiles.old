@@ -1,23 +1,20 @@
 #!/bin/bash
-echo "---------------------------------------------------------"
-echo "$(tput setaf 2) LULU: Installing homebrew application and tools .$(tput sgr 0)"
-echo "---------------------------------------------------------"
 
+echo "---------------------------------------------------------"
+echo "$(tput setaf 2) LULU: Installing homebrew applications. $(tput sgr 0)"
+echo "---------------------------------------------------------"
 
 packages=(
   starship
-  awscli
-  azure-cli
   neovim
-  azure-functions-core-tools@latest
   tmux
+  gh
 )
 casks=()
 
 function dotfiles_applications_init {
   if test ! $(which brew); then
       echo "No Homebrew!! Installing..."
-
       if [[ ( "${OS_TYPE}" == "linux" && "${OS_WSL}" == 0 ) && ( "${OS_DIST_TYPE}" == "ubuntu" || "${OS_DIST_TYPE}" == "debian" ) ]]; then
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
       fi
@@ -27,13 +24,9 @@ function dotfiles_applications_init {
           echo "You do not have command line tools installed, install them pls"
           exit 1
         fi
-	      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
       fi
-
-      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh)"
   fi
-
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh)"
 
   brew analytics off
   for i in "${packages[@]}"
@@ -72,10 +65,5 @@ function dotfiles_applications_down() {
       if [ "${OS_TYPE}" == "osx" ]; then
 	      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall.sh)"
       fi
-  fi
-  
-  if test $(which brew); then
-    rm -rf "$NVM_DIR"
-
   fi
 }

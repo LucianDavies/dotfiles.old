@@ -1,18 +1,20 @@
-# I like vim
-export EDITOR="vim"
+### homebrew
+[[ -z $HOMEBREW_PREFIX ]] && case $(uname) in
+Darwin)
+  if [[ $(uname -m) == 'arm64' ]]; then
+    HOMEBREW_PREFIX='/opt/homebrew'
+  elif [[ $(uname -m) == 'x86_64' ]]; then
+    HOMEBREW_PREFIX='/usr/local'
+  fi
+  ;;
+Linux) HOMEBREW_PREFIX='/home/linuxbrew/.linuxbrew' ;;
+esac
+eval $($HOMEBREW_PREFIX/bin/brew shellenv)
 
-# starship prompt
-export STARSHIP_CONFIG=~/.starship.toml
-if type starship &> /dev/null; then
-    eval "$(starship init zsh)"
-fi
+### starship
+eval "$(starship init zsh)"
 
-export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-# python3
-# brew install python3
-export PATH="/usr/local/opt/python3/bin:$PATH"
-
-#source ~/.docker.zshrc
-source ~/.aliases.zshrc
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

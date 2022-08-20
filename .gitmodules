@@ -1,3 +1,6 @@
 [submodule "scripts/git-fuzzy"]
 	path = scripts/git-fuzzy
 	url = https://github.com/bigH/git-fuzzy.git
+[submodule "nvim"]
+	path = nvim
+	url = https://github.com/NvChad/NvChad

@@ -9,6 +9,7 @@ packages=(
   neovim
   tmux
   gh
+  ripgrep
 )
 casks=()
 

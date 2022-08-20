@@ -1,3 +1,5 @@
+alias vim="nvim"
+
 ### homebrew
 [[ -z $HOMEBREW_PREFIX ]] && case $(uname) in
 Darwin)

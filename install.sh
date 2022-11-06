@@ -67,7 +67,7 @@ function install() {
 
 function yes_or_no {
   while true; do
-    read -q yn\?"$* [y/n]: "
+    read yn\?"$* [y/n]: "
     case $yn in
       [Yy]*) echo "" ; return 0  ;;
       [Nn]*) echo "Aborted" ; return  1 ;;

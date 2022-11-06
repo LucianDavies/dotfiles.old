@@ -128,6 +128,15 @@
 
   programs.tmux = {
     enable = true;
+    aggressiveResize = true;
+    baseIndex = 1;
+    terminal = "screen-256color";
+    clock24 = true;
+    customPaneNavigationAndResize = true;
+    escapeTime = 0;
+    historyLimit = 50000;
+    keyMode = "vi";
+    shortcut = "Space";
   };
 
   xdg.configFile."nvim/lua".source = ./nvim/lua;

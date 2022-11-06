@@ -38,7 +38,7 @@ function install_home_manager {
   fi
 
   # Platform Specific home.nix linking
-  rm $HOME/.config/nixpkgs/home.nix
+  # rm $HOME/.config/nixpkgs/home.nix
   platform=$(uname)
   if [ "$platform" = "Darwin" ]; then
     #sed "s/USER/$USER/" $HOME/.dotfiles/config/home-manager/mac-home.nix > $HOME/.dotfiles/config/current-home.nix
@@ -55,7 +55,7 @@ function install_home_manager {
 
 function install() {
   # Download dotfiles
-  git clone https://github.com/LucianDavies/dotfiles.git $HOME/.dotfiles
+  # git clone https://github.com/LucianDavies/dotfiles.git $HOME/.dotfiles
 
   if type zsh &> /dev/null; then
     install_nix && wait
@@ -67,7 +67,7 @@ function install() {
 
 function yes_or_no {
   while true; do
-    read yn\?"$* [y/n]: "
+    read -q yn\?"$* [y/n]: "
     case $yn in
       [Yy]*) echo "" ; return 0  ;;
       [Nn]*) echo "Aborted" ; return  1 ;;
@@ -77,7 +77,8 @@ function yes_or_no {
 
 if [[ -d $HOME/.dotfiles ]]; then
   message="~/.dotfiles already exists, would you like to remove and install again?"
-  yes_or_no "$message" && rm -rf "$HOME/.dotfiles" && install
+  #yes_or_no "$message" && rm -rf "$HOME/.dotfiles" && install
+  install
 else
   install
 fi

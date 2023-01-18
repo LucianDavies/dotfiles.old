@@ -48,7 +48,7 @@ function install_home_manager {
     #sed -i "s/USER/$USER/" $HOME/.dotfiles/config/current-home.nix
     ln -s $HOME/.dotfiles/config/current-home.nix $HOME/.config/nixpkgs/home.nix
   fi
-  
+
   home-manager build && wait
   home-manager switch && wait
 }

@@ -19,6 +19,24 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
+ # Packages that should be installed to the user profile.
+
+  home.packages = with pkgs; [
+    watch
+    htop
+    nodejs
+    ripgrep
+    cargo
+    rustc
+    azure-cli
+    gnumake
+    jq
+    gh
+    delta
+    hugo
+    azure-functions-core-tools
+    tfswitch
+  ];
 
   programs.starship = {
     enable = true;
@@ -40,10 +58,15 @@
       save = 10000;
       share = true;
     };
+    shellAliases = {
+      vi = "nvim";
+      vim = "nvim";
+    };
     envExtra = ''
       export LESSHISTFILE="${config.xdg.dataHome}/less_history"
       export CARGO_HOME="${config.xdg.cacheHome}/cargo"
     '';
+
     initExtra = ''
       nix-closure-size() {
         nix-store -q --size $(nix-store -qR $(${pkgs.coreutils}/bin/readlink -e $1) ) |
@@ -67,6 +90,10 @@
       bindkey -rpM viins '^[^['
       KEYTIMEOUT=1
       ${pkgs.any-nix-shell}/bin/any-nix-shell zsh | source /dev/stdin
+
+      case $- in *i*)
+        [ -z "$TMUX" ] && exec tmux new-session -A -s $(whoami)
+      esac
     '';
     sessionVariables = {
       RPROMPT = "";
@@ -108,6 +135,11 @@
     ];
   };
 
+  programs.fzf = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+
   programs.git = {
     enable = true;
     userEmail = "5219738+LucianDavies@users.noreply.github.com";
@@ -119,11 +151,18 @@
       merge.conflictstyle = "diff3";
       mergetool.prompt = true;
       core.editor = "nvim";
+      push.default = "simple";
+      push.autoSetupRemote = true;
+      pull.ff = "only";
     };
+    ignores = [
+      ".DS_Store"
+    ];
   };
 
   programs.neovim = {
     enable = true;
+    package = pkgs.neovim;
   };
 
   programs.tmux = {
@@ -139,7 +178,12 @@
     shortcut = "Space";
   };
 
-  xdg.configFile."nvim/lua".source = ./nvim/lua;
-  xdg.configFile."nvim/init.lua".source = ./nvim/init.lua;
+   xdg.configFile."nvim" = {
+    source = ./nvim;
+    recursive = true;
+  };
+
+  # xdg.configFile."nvim/lua".source = ./nvim/lua;
+  # xdg.configFile."nvim/init.lua".source = ./nvim/init.lua;
   xdg.configFile."tmux/tmux.conf".source = ./tmux/tmux.conf;
 }

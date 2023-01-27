@@ -17,10 +17,12 @@ function install_nix {
 
   # I might not have needed to, but I rebooted
   rm $HOME/.config/nix/nix.conf
-  mkdir -p ~/.config/nix
+  mkdir -p $HOME/.config/nix
 
   # Emable nix-command and flakes to bootstrap 
   echo "experimental-features = nix-command flakes" >  $HOME/.config/nix/nix.conf
+
+  # ln -sf $HOME/.dotfiles/config/home.nix $HOME/.config/nixpkgs/home.nix
 }
 
 function install_home_manager {

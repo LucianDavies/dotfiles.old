@@ -6,19 +6,21 @@ function install_nix {
   else
     # Platform Specific install Nix
     platform=$(uname)
-    if [ "$platform" = "Darwin" ]; then
-      echo "Installing Nix Package Manager"
-      sh <(curl -L https://nixos.org/nix/install) --darwin-use-unencrypted-nix-store-volume --daemon
-      wait
-    else
-      echo "Installing Nix Package Manager"
-      sh <(curl -L https://nixos.org/nix/install) --no-daemon
-      wait
-    fi
+    echo "Installing Nix Package Manager"
+    sh <(curl -L https://nixos.org/nix/install) --daemon
+    wait
   fi
+
   if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then
     source $HOME/.nix-profile/etc/profile.d/nix.sh;
   fi
+
+  # I might not have needed to, but I rebooted
+  rm $HOME/.config/nix/nix.conf
+  mkdir -p ~/.config/nix
+
+  # Emable nix-command and flakes to bootstrap 
+  echo "experimental-features = nix-command flakes" >  $HOME/.config/nix/nix.conf
 }
 
 function install_home_manager {
@@ -38,16 +40,10 @@ function install_home_manager {
   fi
 
   # Platform Specific home.nix linking
-  # rm $HOME/.config/nixpkgs/home.nix
+  rm $HOME/.config/nixpkgs/home.nix
   platform=$(uname)
-  if [ "$platform" = "Darwin" ]; then
-    #sed "s/USER/$USER/" $HOME/.dotfiles/config/home-manager/mac-home.nix > $HOME/.dotfiles/config/current-home.nix
-    ln -s $HOME/.dotfiles/config/current-home.nix $HOME/.config/nixpkgs/home.nix
-  else
-    #cp $HOME/.dotfiles/config/home-manager/linux-home.nix $HOME/.dotfiles/config/current-home.nix
-    #sed -i "s/USER/$USER/" $HOME/.dotfiles/config/current-home.nix
-    ln -s $HOME/.dotfiles/config/current-home.nix $HOME/.config/nixpkgs/home.nix
-  fi
+  # sed "s/USER/$USER/" $HOME/.dotfiles/config/current-home.nix > $HOME/.dotfiles/config/current-home.nix
+  ln -s $HOME/.dotfiles/config/current-home.nix $HOME/.config/nixpkgs/home.nix
 
   home-manager build && wait
   home-manager switch && wait
@@ -59,7 +55,7 @@ function install() {
 
   if type zsh &> /dev/null; then
     install_nix && wait
-    install_home_manager && wait
+    # install_home_manager && wait
   else
     echo "missing zsh"
   fi

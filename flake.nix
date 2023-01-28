@@ -14,11 +14,13 @@
         defaultPackage.x86_64-darwin = home-manager.defaultPackage.x86_64-darwin;
 
         homeConfigurations = {
-            "tonderai" = home-manager.lib.homeManagerConfiguration {
+            "home" = home-manager.lib.homeManagerConfiguration {
                 # Note: I am sure this could be done better with flake-utils or something
                 pkgs = nixpkgs.legacyPackages.x86_64-darwin;
 
-                modules = [ ./config/home.nix ];
+                modules = [ 
+                    ./config/home.nix
+                ];
             };
         };
     };

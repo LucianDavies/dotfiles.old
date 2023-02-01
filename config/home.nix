@@ -3,20 +3,19 @@
     home.homeDirectory = "/Users/tonderai";
     home.stateVersion = "23.05";
     programs.home-manager.enable = true;
-
     home.packages = [
       pkgs.ripgrep
     ];
 
+    home.file.".config/nvim/init.lua".source = ./nvim/init.lua;
     programs.neovim = {
       enable = true;
-      extraConfig = "";
     };
 
     programs.tmux = {
       enable = true;
       shell = "${pkgs.zsh}/bin/zsh";
-      extraConfig = "";
+      extraConfig = builtins.readFile ./tmux/tmux.conf;
     };
 
     programs.starship = {
@@ -35,18 +34,19 @@
       defaultOptions = [ "-m --bind ctrl-a:select-all,ctrl-d:deselect-all" ];
     };
 
+    
     programs.git = {
-    enable = true;
-    userEmail = "5219738+LucianDavies@users.noreply.github.com";
-    userName = "LucianDavies";
-    extraConfig = {
-      difftool.prompt = true;
-      github.user = "LucianDavies";
-      init.defaultBranch = "main";
-      merge.conflictstyle = "diff3";
-      mergetool.prompt = true;
-      core.editor = "nvim";
-      push.autoSetupRemote = true;
+      enable = true;
+      includes = [
+        { path = "./git/gitconfig"; }
+        {
+          path = "./git/gitconfig-work";
+          condition = "gitdir/i:work/";
+        }
+        {
+          path = "./git/gitconfig-work";
+          condition = "gitdir/i:dotfiles/";
+        }
+      ];
     };
-  };
 }

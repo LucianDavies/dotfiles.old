@@ -7,6 +7,10 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
   vim.cmd [[packadd packer.nvim]]
 end
 
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+vim.opt.termguicolors = true
+
 require('packer').startup(function(use)
   -- Package manager
   use 'wbthomason/packer.nvim'
@@ -148,15 +152,6 @@ vim.o.completeopt = 'menuone,noselect'
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
--- Netrw
-vim.g.netrw_banner = 0
-vim.g.netrw_liststyle = 3
-vim.g.netrw_browse_split = 4
-vim.g.netrw_altv = 1
-vim.g.netrw_winsize = -28
--- Change the copy command. Mostly to enable recursive copy of directories.
-vim.g.netrw_localcopydircmd = 'cp -r'
-
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
@@ -228,10 +223,17 @@ require('telescope').setup {
 }
 
 --nvim-tree
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
-vim.opt.termguicolors = true
-require("nvim-tree").setup()
+require("nvim-tree").setup({
+  actions = {
+    open_file = {
+      resize_window = true,
+      quit_on_open = true,
+      window_picker = {
+        enable = false,
+      },
+    },
+  }
+})
 
 -- Enable telescope fzf native, if installed
 pcall(require('telescope').load_extension, 'fzf')

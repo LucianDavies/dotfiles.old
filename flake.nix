@@ -20,6 +20,13 @@
 
                 modules = [ 
                     ./config/home.nix
+                    {
+                        home = {
+                            stateVersion = "23.05";
+                            username = "tonderai";
+                            homeDirectory = "/Users/tonderai";
+                        };
+                    }
                 ];
             };
         };

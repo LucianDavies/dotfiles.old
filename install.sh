@@ -10,24 +10,9 @@ function install_nix {
     sh <(curl -L https://nixos.org/nix/install) --daemon
     wait
   fi
-
-  if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then
-    source $HOME/.nix-profile/etc/profile.d/nix.sh;
-  fi
-
-  # I might not have needed to, but I rebooted
-  rm $HOME/.config/nix/nix.conf
-  mkdir -p $HOME/.config/nix
-
-  # Emable nix-command and flakes to bootstrap 
-  echo "experimental-features = nix-command flakes" >  $HOME/.config/nix/nix.conf
-
-  # ln -sf $HOME/.dotfiles/config/home.nix $HOME/.config/nixpkgs/home.nix
 }
 
 function install_home_manager {
-  export NIX_PATH=$HOME/.nix-defexpr/channels:/nix/var/nix/profiles/per-user/root/channels${NIX_PATH:+:$NIX_PATH}
-
   if type home-manager &> /dev/null; then
     echo "Skipping home-manager install"
   else
@@ -41,11 +26,8 @@ function install_home_manager {
     nix-shell '<home-manager>' -A install
   fi
 
-  # Platform Specific home.nix linking
-  rm $HOME/.config/nixpkgs/home.nix
-  platform=$(uname)
   # sed "s/USER/$USER/" $HOME/.dotfiles/config/current-home.nix > $HOME/.dotfiles/config/current-home.nix
-  ln -s $HOME/.dotfiles/config/current-home.nix $HOME/.config/nixpkgs/home.nix
+  ln -s $HOME/.dotfiles/config/home.nix $HOME/.config/nixpkgs/home.nix
 
   home-manager build && wait
   home-manager switch && wait
@@ -56,8 +38,8 @@ function install() {
   # git clone https://github.com/LucianDavies/dotfiles.git $HOME/.dotfiles
 
   if type zsh &> /dev/null; then
-    install_nix && wait
-    # install_home_manager && wait
+    #install_nix && wait
+    install_home_manager && wait
   else
     echo "missing zsh"
   fi

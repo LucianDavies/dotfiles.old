@@ -1,20 +1,14 @@
 [user]
-    name = "LucianDavies"
+	name = "LucianDavies"
 	email = "5219738+LucianDavies@users.noreply.github.com"
 [core]
-    editor = nvim
-[color]
-    diff = auto
-    status = auto
-    branch = auto
-    ui = true
-
+	editor = nvim
 [mergetool "nvim"]
-  cmd = nvim -f -c \"Gdiffsplit!\" \"$MERGED\"
+	cmd = nvim -f -c \"Gdiffsplit!\" \"$MERGED\"
 [merge]
-  tool = nvim
+	tool = nvim
 [mergetool]
-  prompt = false
+	prompt = false
 
 [push]
 	autoSetupRemote = true

@@ -11,9 +11,109 @@ vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 vim.opt.termguicolors = true
 
+
 require('packer').startup(function(use)
   -- Package manager
   use 'wbthomason/packer.nvim'
+
+  use {
+    'reedes/vim-lexical',
+    ft = {
+      'asciidoc',
+      'html',
+      'gitcommit',
+      'mail',
+      'markdown',
+      'md',
+      'rst',
+      'tex',
+      'text',
+      'textile',
+      'norg',
+      'xml'
+    }
+  }
+
+
+  use {
+    "reedes/vim-pencil",
+    ft = {
+      'asciidoc',
+      'html',
+      'gitcommit',
+      'mail',
+      'markdown',
+      'md',
+      'rst',
+      'tex',
+      'text',
+      'textile',
+      'norg',
+      'xml'
+    }
+  }
+
+  use 'christoomey/vim-tmux-navigator'
+
+  use 'preservim/vimux'
+
+  use 'jghauser/mkdir.nvim'
+
+  -- use {
+  --   "iamcco/markdown-preview.nvim",
+  --   run = function()
+  --     vim.fn["mkdp#util#install"]()
+  --   end,
+  --   ft = "markdown",
+  --   cmd = { "MarkdownPreview" },
+  --   requires = { "zhaozg/vim-diagram", "aklt/plantuml-syntax" },
+  -- }
+
+  use {
+    'pwntester/octo.nvim',
+    requires = {
+      'nvim-lua/plenary.nvim',
+      'nvim-telescope/telescope.nvim',
+      'kyazdani42/nvim-web-devicons',
+    },
+    config = function ()
+      require"octo".setup()
+    end
+  }
+
+  use {
+    "nvim-neorg/neorg",
+    config = function()
+      require('neorg').setup {
+        load = {
+          ["core.defaults"] = {}, -- Loads default behaviour
+          ["core.norg.concealer"] = {}, -- Adds pretty icons to your documents
+          [ 'core.norg.journal'] = {
+            config = {
+              journal_folder = "daily",
+              strategy = "flat",
+            }
+          },
+          ["core.integrations.telescope"] = {},
+          ["core.norg.dirman"] = {
+            config = {
+              workspaces = {
+                root = "~/workspace", -- Format: <name_of_workspace> = <path_to_workspace_root>
+              },
+              index = "index.norg", -- The name of the main (root) .norg file
+              autochdir = true,
+              autodetect = true,
+            }
+          }
+        },
+      }
+    end,
+    run = ":Neorg sync-parsers",
+    requires = {
+      "nvim-lua/plenary.nvim",
+      "nvim-neorg/neorg-telescope"
+    }
+  }
 
   use {
     'nvim-tree/nvim-tree.lua',
@@ -36,6 +136,14 @@ require('packer').startup(function(use)
       -- Additional lua configuration, makes nvim stuff amazing
       'folke/neodev.nvim',
     },
+  }
+
+  use {
+    "jay-babu/mason-null-ls.nvim",
+    requires = {
+      "jose-elias-alvarez/null-ls.nvim",
+      'williamboman/mason.nvim',
+    }
   }
 
   use { -- Autocompletion
@@ -63,6 +171,8 @@ require('packer').startup(function(use)
     end,
   }
 
+  use 'vim-test/vim-test'
+
   -- Git related plugins
   use 'tpope/vim-fugitive'
   use 'tpope/vim-rhubarb'
@@ -73,6 +183,11 @@ require('packer').startup(function(use)
   use 'lukas-reineke/indent-blankline.nvim' -- Add indentation guides even on blank lines
   use 'numToStr/Comment.nvim' -- "gc" to comment visual regions/lines
   use 'tpope/vim-sleuth' -- Detect tabstop and shiftwidth automatically
+
+   use {  -- Autopairs for brackets
+    'windwp/nvim-autopairs',
+    config = function() require('nvim-autopairs').setup {} end
+  }
 
   -- Fuzzy Finder (files, lsp, etc)
   use { 'nvim-telescope/telescope.nvim', branch = '0.1.x', requires = { 'nvim-lua/plenary.nvim' } }
@@ -104,6 +219,30 @@ if is_bootstrap then
   return
 end
 
+-- null-ls 
+require("mason").setup()
+require("mason-null-ls").setup({
+    automatic_setup = true,
+})
+
+-- Neorg
+local neorg_callbacks = require("neorg.callbacks")
+neorg_callbacks.on_event("core.keybinds.events.enable_keybinds", function(_, keybinds)
+	-- Map all the below keybinds only when the "norg" mode is active
+	keybinds.map_event_to_mode("norg", {
+		n = { -- Bind keys in normal mode
+			{ "<leader>fn", "core.integrations.telescope.find_linkable" },
+		},
+
+		i = { -- Bind in insert mode
+			{ "<C-l>", "core.integrations.telescope.insert_link" },
+		},
+	}, {
+		silent = true,
+		noremap = true,
+	})
+end)
+
 -- Automatically source and re-compile packer whenever you save this init.lua
 local packer_group = vim.api.nvim_create_augroup('Packer', { clear = true })
 vim.api.nvim_create_autocmd('BufWritePost', {
@@ -129,6 +268,8 @@ vim.o.breakindent = true
 
 -- Save undo history
 vim.o.undofile = true
+
+vim.cmd [[ set noswapfile ]]
 
 -- Case insensitive searching UNLESS /C or capital in search
 vim.o.ignorecase = true
@@ -163,7 +304,12 @@ vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = tr
 -- Replace
 vim.keymap.set('n', '<C-S>', ':%s/', { noremap = true })
 
-vim.keymap.set('n', 'g?', vim.diagnostic.open_float, {silent = true})
+vim.keymap.set('n', 'g?', vim.diagnostic.open_float, { silent = true })
+
+
+vim.cmd [[
+  let test#strategy = "vimux"
+]]
 --
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
@@ -234,6 +380,8 @@ require("nvim-tree").setup({
     },
   }
 })
+
+vim.keymap.set('n', '<C-n>', '<cmd> NvimTreeToggle <CR>', { desc = 'toggle [n]vimtree' })
 
 -- Enable telescope fzf native, if installed
 pcall(require('telescope').load_extension, 'fzf')
@@ -421,10 +569,12 @@ require('fidget').setup()
 
 -- nvim-cmp setup
 local cmp = require 'cmp'
+local cmp_autopairs = require('nvim-autopairs.completion.cmp')
 local luasnip = require 'luasnip'
 
 -- add friendly snippets to LuaSnip
 require("luasnip.loaders.from_vscode").lazy_load()
+require("luasnip.loaders.from_vscode").lazy_load({ paths = { "~/.config/nvim/lua/snippets" } })
 
 cmp.setup {
   snippet = {
@@ -464,6 +614,11 @@ cmp.setup {
     { name = 'luasnip' },
   },
 }
+
+cmp.event:on(
+  'confirm_done',
+  cmp_autopairs.on_confirm_done()
+)
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

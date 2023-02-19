@@ -32,7 +32,7 @@
   ];
 
   home.file.".config/nvim/init.lua".source = ./nvim/init.lua;
-  home.file.".config/nvim/lua/snippets".source = ./nvim/snippets;
+  # home.file.".config/nvim/lua/snippets".source = ./nvim/snippets;
 
   programs.neovim = {
     enable = true;

@@ -5,6 +5,5 @@ with pkgs; [
   ripgrep
   nodejs
   jq
-  gcc
   rustup
 ]

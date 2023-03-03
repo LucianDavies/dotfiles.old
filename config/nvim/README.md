@@ -64,6 +64,9 @@ This will automatically install `nvim-autopairs` and enable it on startup. For m
 In the file: `lua/custom/plugins/filetree.lua`, add:
 
 ```lua
+-- Unless you are still migrating, remove the deprecated commands from v1.x
+vim.cmd([[ let g:neo_tree_remove_legacy_commands = 1 ]])
+
 return {
   "nvim-neo-tree/neo-tree.nvim",
   version = "*",
@@ -73,9 +76,6 @@ return {
     "MunifTanjim/nui.nvim",
   },
   config = function ()
-    -- Unless you are still migrating, remove the deprecated commands from v1.x
-    vim.cmd([[ let g:neo_tree_remove_legacy_commands = 1 ]])
-
     require('neo-tree').setup {}
   end,
 }
@@ -125,6 +125,6 @@ This requires:
 - Install CMake, and the Microsoft C++ Build Tools on Windows
 
 ```lua
-use {'nvim-telescope/telescope-fzf-native.nvim', run = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
+{'nvim-telescope/telescope-fzf-native.nvim', build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
 ```
 

@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   # Home Manager needs a bit of information about you and the
@@ -24,14 +24,16 @@
     pkgs.plantuml
     pkgs.nodejs
     pkgs.jq
-    pkgs.gcc
     pkgs.rustup
     pkgs.gh
     pkgs.azure-cli
     pkgs.azure-functions-core-tools
+    pkgs.terraform
+    pkgs.libxslt
   ];
 
   home.file.".config/nvim/init.lua".source = ./nvim/init.lua;
+  home.file.".config/nvim/lua".source = ./nvim/lua;
   # home.file.".config/nvim/lua/snippets".source = ./nvim/snippets;
 
   programs.neovim = {

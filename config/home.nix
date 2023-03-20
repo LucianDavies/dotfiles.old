@@ -20,9 +20,11 @@
   programs.home-manager.enable = true;
 
   home.packages = [
+    pkgs.fastlane
     pkgs.ripgrep
     pkgs.plantuml
     pkgs.nodejs
+    pkgs.lua
     pkgs.jq
     pkgs.rustup
     pkgs.gh
@@ -30,6 +32,7 @@
     pkgs.azure-functions-core-tools
     pkgs.terraform
     pkgs.libxslt
+    pkgs.delta
   ];
 
   home.file.".config/nvim/init.lua".source = ./nvim/init.lua;

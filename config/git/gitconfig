@@ -1,17 +1,100 @@
 [user]
 	name = "LucianDavies"
 	email = "5219738+LucianDavies@users.noreply.github.com"
+[credential]
+	helper = store
 [core]
-	editor = nvim
-[mergetool "nvim"]
-	cmd = nvim -f -c \"Gdiffsplit!\" \"$MERGED\"
-[merge]
-	tool = nvim
-[mergetool]
-	prompt = false
+  editor = nvim
+  pager = delta
 
 [push]
-	autoSetupRemote = true
+	default = current
+	followTags = true
+[alias]
+	co = checkout
+	cm = commit
+	st = status
+	br = branch
+	pu = push -u
+	type = cat-file -t
+	dump = cat-file -p
+	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	diffc = diff --cached
+	permission-reset = !git diff -p -R --no-color | grep -E \"^(diff|(old|new) mode)\" --color=never | git apply
+	patch = !git --no-pager diff --no-color
+[filter "lfs"]
+	smudge = git-lfs smudge -- %f
+	required = true
+	clean = git-lfs clean -- %f
+	process = git-lfs filter-process
+[color]
+	ui = true
+[color "diff-highlight"]
+	oldNormal = red bold
+	oldHighlight = red bold 52
+	newNormal = green bold
+	newHighlight = green bold 22
+[color "diff"]
+	meta = yellow
+	frag = magenta bold
+	commit = yellow bold
+	old = red bold
+	new = green bold
+	whitespace = red reverse
 
+[interactive]
+    diffFilter = delta --color-only --features=interactive
 
+[include]
+	path = ~/.config/delta/themes.gitconfig
+
+[delta]
+    features = chameleon
+	side-by-side = false
+
+[delta "interactive"]
+    keep-plus-minus-markers = true
+
+[delta "decorations"]
+    commit-decoration-style = blue ol
+    commit-style = raw
+    file-style = omit
+    hunk-header-decoration-style = blue box
+    hunk-header-file-style = red
+    hunk-header-line-number-style = "#067a00"
+    hunk-header-style = file line-number syntax
+
+[diff "sopsdiffer"]
+	textconv = sops -d
+
+[includeIf "gitdir:~/.dotfiles"]
+	path = ~/.config/gitconfig/github
+
+[includeIf "gitdir:**/github.com/**"]
+	path = ~/.config/gitconfig/github
+
+[includeIf "gitdir:**/bitbucket.org/burdastudios/**"]
+	path = ~/.config/gitconfig/burdastudios
+
+[includeIf "gitdir:**/bitbucket.org/thekorn/**"]
+	path = ~/.config/gitconfig/bitbucket
+
+[includeIf "gitdir:**/github.com/edelight/**"]
+	path = ~/.config/gitconfig/github
+
+[includeIf "gitdir:**/git.pansoft.de/**"]
+	path = ~/.config/gitconfig/pansoft
+
+[includeIf "gitdir:**/gitlab.bfops.io/**"]
+	path = ~/.config/gitconfig/burdaforward
+
+[includeIf "gitdir:**/git.cxo.name/**"]
+	path = ~/.config/gitconfig/burdaforward.bitbucket
+
+[diff]
+	submodule = log
+[pull]
+	rebase = false
+[init]
+	defaultBranch = main
 
